@@ -72,7 +72,8 @@ class Backend(QObject):
             response = urllib.request.urlopen(url)
             data = json.loads(response.read().decode('utf-8'))
             data['time'] = pretty_date(data['time'])
-            data['kids'] = len(data['kids'])
+            if hasattr(data, 'kids'):
+                data['kids'] = len(data['kids'])
             self.storyLoaded.emit(data)
         Threader(load, self).start()
 
@@ -90,7 +91,8 @@ if __name__ == "__main__":
     backend = Backend()
     engine = QQmlApplicationEngine()
     engine.rootContext().setContextProperty("backend", backend)
-    engine.load(QUrl.fromLocalFile('view.qml'))
+    main_qml_file = os.path.join(os.path.dirname(__file__), "view.qml")
+    engine.load(QUrl.fromLocalFile(main_qml_file))
     if not engine.rootObjects():
         sys.exit(-1)
     sys.exit(app.exec_())
