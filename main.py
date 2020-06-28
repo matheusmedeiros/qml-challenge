@@ -94,5 +94,5 @@ if __name__ == "__main__":
     main_qml_file = os.path.join(os.path.dirname(__file__), "view.qml")
     engine.load(QUrl.fromLocalFile(main_qml_file))
     if not engine.rootObjects():
-        sys.exit(-1)
+        sys.exit(1)
     sys.exit(app.exec_())
