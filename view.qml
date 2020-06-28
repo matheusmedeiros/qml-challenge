@@ -13,26 +13,23 @@ ApplicationWindow {
 
     property var prevStoriesList: [];
 
-    /* startup connect backend signals to a local methods and invokes loadStories. */
-
+    /* startup connects backend signals to a local methods and invokes loadStories. */
     readonly property var startup: () => { 
       /*
-       * loadEachStory receive storyIds from listLoaded signal and calls loadStory for each id.
+       * loadEachStory receives storyIds from listLoaded signal and calls loadStory for each id.
        *
-       * storyIds - A array with the ids corresponding to your stories
+       * storyIds - An array with IDs corresponding to stories
        */
-
         const loadEachStory = (storyIds) => {
             storyIds.forEach(id => backend.loadStory(id));
         };
 
        /*
-        * setStoriesList receive story and pre save this stories in prevStoriesList property.
+        * setStoriesList receives a story and pre-saves it in the prevStoriesList property.
         * Ends by restarting the timer of timerToSetList.
         *
-        * story - A object with title, time, by, descendants, score and url properties.
+        * story - An object with title, time, by, descendants, score and url properties.
         */
-
         const setStoriesList = (story) => {
             prevStoriesList.push(story);
 
@@ -45,17 +42,15 @@ ApplicationWindow {
     }
 
     /*
-     * setStoriesList assigns orderedList to storiesList and set false to isloading from list
-     * if prevStoriesList to be not empty.
-     */
-
+    * setStoriesList assigns orderedList to storiesList and sets isLoading to false from list
+    * when prevStoriesList is not empty.
+    */
     readonly property var setStoriesList: () => {
         if (prevStoriesList.length === 0) {
-            return
+            return;
         }
 
-        /* Sorts prevStoriesList from highest to lowest score and return a new array. */
-
+        /* Sorts prevStoriesList from highest to lowest score and returns a new array. */
         const orderedList = prevStoriesList.sort((prev, newValue) => {
             return newValue.score - prev.score;
         });
@@ -66,9 +61,8 @@ ApplicationWindow {
 
     /*
     * This Timer is used like a debounce to wait for loading a considerable number of stories
-    * and then trigger setStoriesList.
+    * and then triggers setStoriesList.
     */
-
     Timer {
         id: timerToSetList;
         interval: 1000;
